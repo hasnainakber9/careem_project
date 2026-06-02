@@ -73,6 +73,17 @@ const serializeMetrics = (metrics: MobilityMetrics) => ({
   topCorridors: metrics.topCorridors,
 });
 
+const scrollToSection = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+  event.preventDefault();
+  const element = document.getElementById(id);
+  if (!element) return;
+
+  const offset = id === "top" ? 0 : window.innerWidth <= 860 ? 16 : 102;
+  const top = element.getBoundingClientRect().top + window.scrollY - offset;
+  window.history.replaceState(null, "", `#${id}`);
+  window.scrollTo({ top: Math.max(top, 0), behavior: "smooth" });
+};
+
 function App() {
   const [rows, setRows] = useState<TripRecord[]>([]);
   const [sourceLabel, setSourceLabel] = useState("Loading sample");
@@ -166,9 +177,18 @@ function App() {
           <span>mobility</span>
         </a>
         <nav className="nav-pills" aria-label="Primary">
-          <a href="#brief">Brief</a>
-          <a href="#signals">Signals</a>
-          <a href="#map">Map</a>
+          <a href="#top" onClick={(event) => scrollToSection(event, "top")}>
+            Overview
+          </a>
+          <a href="#signals" onClick={(event) => scrollToSection(event, "signals")}>
+            Signals
+          </a>
+          <a href="#map" onClick={(event) => scrollToSection(event, "map")}>
+            Routes
+          </a>
+          <a href="#brief" onClick={(event) => scrollToSection(event, "brief")}>
+            Brief
+          </a>
         </nav>
         <button className="start-button" type="button" onClick={() => fileInputRef.current?.click()}>
           Upload CSV
@@ -181,7 +201,7 @@ function App() {
             <span className="blue-dot" />
             Careem-style mobility intelligence
           </p>
-          <h1>Turn ride-hailing signals into confident action.</h1>
+          <h1>Turn mobility signals into confident action.</h1>
           <p className="hero-text">
             A public-data decision cockpit for demand, fare efficiency, pooling, and supply movement.
           </p>
@@ -361,6 +381,16 @@ function App() {
           </div>
         </aside>
       </section>
+
+      <footer className="submission-footer">
+        <div>
+          <p className="panel-kicker">Ready for submission</p>
+          <h2>Public-data prototype with screenshots, dataset links, and a 100-word brief.</h2>
+        </div>
+        <a href="https://github.com/hasnainakber9/careem_project" target="_blank" rel="noreferrer">
+          View repository
+        </a>
+      </footer>
     </main>
   );
 }
