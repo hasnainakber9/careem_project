@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 820" role="img" aria-labelledby="title desc">
+  <title id="title">Night road mobility operations visual</title>
+  <desc id="desc">An open-source stylized night road with ride-hailing routes, city lights, and operations signals.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0e1512"/>
+      <stop offset="0.55" stop-color="#060807"/>
+      <stop offset="1" stop-color="#111713"/>
+    </linearGradient>
+    <linearGradient id="road" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#1a1d1a"/>
+      <stop offset="1" stop-color="#050604"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="1200" height="820" fill="url(#sky)"/>
+  <g opacity="0.24" stroke="#f5f9ff" stroke-width="1">
+    <path d="M0 132H1200M0 264H1200M0 396H1200M0 528H1200M0 660H1200"/>
+    <path d="M120 0V820M240 0V820M360 0V820M480 0V820M600 0V820M720 0V820M840 0V820M960 0V820M1080 0V820"/>
+  </g>
+  <g opacity="0.5">
+    <path d="M210 348h48v238h-48zM278 286h64v300h-64zM370 222h76v364h-76zM480 318h54v268h-54zM570 178h84v408h-84zM702 268h68v318h-68zM814 216h92v370h-92zM946 326h58v260h-58z" fill="#151a17"/>
+    <g fill="#f5f9ff" opacity="0.32">
+      <rect x="232" y="376" width="10" height="10"/><rect x="300" y="326" width="10" height="10"/><rect x="402" y="262" width="10" height="10"/><rect x="604" y="226" width="10" height="10"/><rect x="842" y="264" width="10" height="10"/>
+      <rect x="236" y="420" width="10" height="10"/><rect x="318" y="386" width="10" height="10"/><rect x="426" y="340" width="10" height="10"/><rect x="618" y="314" width="10" height="10"/><rect x="866" y="334" width="10" height="10"/>
+    </g>
+  </g>
+  <path d="M0 820C198 694 305 610 430 572c128-39 253-27 356-79 109-55 183-142 414-191v518H0z" fill="url(#road)"/>
+  <path d="M128 820C273 687 374 622 486 596c105-25 207-17 316-72 95-48 172-119 344-160" fill="none" stroke="#f6f2e8" stroke-opacity="0.28" stroke-width="28"/>
+  <path d="M128 820C273 687 374 622 486 596c105-25 207-17 316-72 95-48 172-119 344-160" fill="none" stroke="#050604" stroke-opacity="0.82" stroke-width="20"/>
+  <path d="M142 797C284 674 382 625 492 603c102-20 213-15 314-67 90-46 169-108 324-148" fill="none" stroke="#f6c562" stroke-opacity="0.72" stroke-width="8" stroke-dasharray="42 32"/>
+  <g filter="url(#glow)">
+    <circle cx="304" cy="656" r="13" fill="#7fb0ff"/>
+    <circle cx="512" cy="596" r="13" fill="#7fb0ff"/>
+    <circle cx="812" cy="520" r="13" fill="#7fb0ff"/>
+    <circle cx="1010" cy="414" r="13" fill="#7fb0ff"/>
+  </g>
+  <g fill="none" stroke="#7fb0ff" stroke-opacity="0.58" stroke-width="3">
+    <path d="M304 656C412 560 508 548 620 558"/>
+    <path d="M512 596C625 498 744 472 812 520"/>
+    <path d="M812 520C883 464 928 428 1010 414"/>
+  </g>
+  <g transform="translate(238 574)">
+    <path d="M0 48h214c17 0 32 12 36 28l8 34H34C15 110 0 95 0 76V48z" fill="#f5f9ff"/>
+    <path d="M42 0h108c18 0 36 9 47 24l18 24H10l21-32C34 6 38 0 42 0z" fill="#d9e6ef"/>
+    <circle cx="61" cy="110" r="25" fill="#050604"/><circle cx="203" cy="110" r="25" fill="#050604"/>
+    <circle cx="61" cy="110" r="10" fill="#7fb0ff"/><circle cx="203" cy="110" r="10" fill="#7fb0ff"/>
+    <path d="M58 16h58l22 32H36z" fill="#0f1715"/>
+  </g>
+  <g font-family="Manrope, Arial, sans-serif" font-weight="800" fill="#f5f9ff">
+    <text x="78" y="82" font-size="22">PUBLIC DATA ROUTING LAYER</text>
+    <text x="78" y="116" font-size="14" fill="#9ec4ff">Demand, pooling, and revenue signals</text>
+  </g>
+</svg>
