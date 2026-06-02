@@ -40,6 +40,8 @@ type ChartPoint = {
   detail: string;
 };
 
+type SectionId = "top" | "signals" | "map" | "brief";
+
 type AreaEconomics = {
   key: string;
   label: string;
@@ -73,12 +75,19 @@ const serializeMetrics = (metrics: MobilityMetrics) => ({
   topCorridors: metrics.topCorridors,
 });
 
-const scrollToSection = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+const scrollToSection = (event: React.MouseEvent<HTMLAnchorElement>, id: SectionId) => {
   event.preventDefault();
+
+  if (id === "top") {
+    window.history.replaceState(null, "", "#top");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+
   const element = document.getElementById(id);
   if (!element) return;
 
-  const offset = id === "top" ? 0 : window.innerWidth <= 860 ? 16 : 102;
+  const offset = window.innerWidth <= 860 ? 16 : 102;
   const top = element.getBoundingClientRect().top + window.scrollY - offset;
   window.history.replaceState(null, "", `#${id}`);
   window.scrollTo({ top: Math.max(top, 0), behavior: "smooth" });
@@ -93,7 +102,10 @@ function App() {
   const [isAiBusy, setIsAiBusy] = useState(false);
   const [chartMode, setChartMode] = useState<ChartMode>("demand");
   const [activeCorridorIndex, setActiveCorridorIndex] = useState(0);
+  const [activeSection, setActiveSection] = useState<SectionId>("top");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const programmaticSectionRef = useRef<SectionId | null>(null);
+  const programmaticTimerRef = useRef<number | undefined>(undefined);
 
   const loadCsvText = (csvText: string, nextSourceLabel: string) => {
     const parsed = parseTripsFromCsv(csvText);
@@ -112,6 +124,51 @@ function App() {
   useEffect(() => {
     void loadSample();
   }, []);
+
+  useEffect(() => {
+    const sectionIds: SectionId[] = ["top", "signals", "map", "brief"];
+
+    const updateActiveSection = () => {
+      if (programmaticSectionRef.current) {
+        setActiveSection(programmaticSectionRef.current);
+        return;
+      }
+
+      const threshold = window.innerWidth <= 860 ? 140 : 170;
+      let nextSection: SectionId = "top";
+      const idsToCheck: SectionId[] = window.innerWidth <= 860 ? sectionIds : ["top", "signals", "map"];
+
+      idsToCheck.forEach((id) => {
+        const element = document.getElementById(id);
+        if (element && element.getBoundingClientRect().top <= threshold) {
+          nextSection = id;
+        }
+      });
+
+      setActiveSection(nextSection);
+    };
+
+    updateActiveSection();
+    window.addEventListener("scroll", updateActiveSection, { passive: true });
+    window.addEventListener("resize", updateActiveSection);
+
+    return () => {
+      window.removeEventListener("scroll", updateActiveSection);
+      window.removeEventListener("resize", updateActiveSection);
+      window.clearTimeout(programmaticTimerRef.current);
+    };
+  }, []);
+
+  const handleNavClick = (event: React.MouseEvent<HTMLAnchorElement>, id: SectionId) => {
+    programmaticSectionRef.current = id;
+    setActiveSection(id);
+    scrollToSection(event, id);
+
+    window.clearTimeout(programmaticTimerRef.current);
+    programmaticTimerRef.current = window.setTimeout(() => {
+      programmaticSectionRef.current = null;
+    }, 1100);
+  };
 
   const metrics = useMemo(() => analyzeTrips(rows), [rows]);
   const deterministicBrief = useMemo(() => buildDecisionBrief(metrics), [metrics]);
@@ -177,16 +234,32 @@ function App() {
           <span>mobility</span>
         </a>
         <nav className="nav-pills" aria-label="Primary">
-          <a href="#top" onClick={(event) => scrollToSection(event, "top")}>
+          <a
+            className={activeSection === "top" ? "active" : ""}
+            href="#top"
+            onClick={(event) => handleNavClick(event, "top")}
+          >
             Overview
           </a>
-          <a href="#signals" onClick={(event) => scrollToSection(event, "signals")}>
+          <a
+            className={activeSection === "signals" ? "active" : ""}
+            href="#signals"
+            onClick={(event) => handleNavClick(event, "signals")}
+          >
             Signals
           </a>
-          <a href="#map" onClick={(event) => scrollToSection(event, "map")}>
+          <a
+            className={activeSection === "map" ? "active" : ""}
+            href="#map"
+            onClick={(event) => handleNavClick(event, "map")}
+          >
             Routes
           </a>
-          <a href="#brief" onClick={(event) => scrollToSection(event, "brief")}>
+          <a
+            className={activeSection === "brief" ? "active" : ""}
+            href="#brief"
+            onClick={(event) => handleNavClick(event, "brief")}
+          >
             Brief
           </a>
         </nav>
@@ -382,6 +455,7 @@ function App() {
         </aside>
       </section>
 
+      <div className="scroll-buffer" aria-hidden="true" />
     </main>
   );
 }

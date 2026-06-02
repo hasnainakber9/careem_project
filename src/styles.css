@@ -140,10 +140,14 @@ a {
   color: rgba(246, 242, 232, 0.68);
 }
 
-.nav-pills a:first-child,
+.nav-pills a.active,
 .nav-pills a:focus-visible {
   color: #f5f9ff;
   background: rgba(255, 255, 255, 0.1);
+}
+
+.scroll-buffer {
+  height: 620px;
 }
 
 .start-button {
@@ -997,6 +1001,10 @@ h1 {
   .chart-readout strong {
     grid-column: auto;
     grid-row: auto;
+  }
+
+  .scroll-buffer {
+    height: 260px;
   }
 }
 
