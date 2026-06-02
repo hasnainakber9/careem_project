@@ -382,15 +382,6 @@ function App() {
         </aside>
       </section>
 
-      <footer className="submission-footer">
-        <div>
-          <p className="panel-kicker">Ready for submission</p>
-          <h2>Public-data prototype with screenshots, dataset links, and a 100-word brief.</h2>
-        </div>
-        <a href="https://github.com/hasnainakber9/careem_project" target="_blank" rel="noreferrer">
-          View repository
-        </a>
-      </footer>
     </main>
   );
 }
